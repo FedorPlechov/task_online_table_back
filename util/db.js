@@ -64,3 +64,10 @@ exports.updateCell = async function updateCell({indexString, indexColumn, conten
         }
     })
 }
+exports.deleteCurrentString = async function deleteColumn({deletedIndexString, quantityStrings}) {
+    const resultDelete = await client.db("test_task_db").collection("table").deleteOne({indexStr: deletedIndexString });
+    for (let i = deletedIndexString+1; i < quantityStrings; i++) {
+        const result = await client.db("test_task_db").collection("table").updateOne({indexStr: i}, {$set: {indexStr: i-1}});
+    }
+    console.log(`Current string is successfully deleted`);
+}

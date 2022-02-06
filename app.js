@@ -3,7 +3,14 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const DB = require("./util/db");
 
-const {insertOneString, deleteLastString, addColumn, deleteColumn, updateCell} = require("./util/db");
+const {
+    insertOneString,
+    deleteLastString,
+    addColumn,
+    deleteColumn,
+    updateCell,
+    deleteCurrentString
+} = require("./util/db");
 
 
 const app = express();
@@ -44,6 +51,10 @@ io.on('connection', (socket) => {
     socket.on("changeCell", (arg) => {
         updateCell(arg);
         socket.broadcast.emit('changeCell', {...arg, flag: true})
+    });
+    socket.on("deleteCurrentString", (arg) => {
+        deleteCurrentString(arg);
+        socket.broadcast.emit('deleteCurrentString', {...arg, flag: true})
     });
 
 });
